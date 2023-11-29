@@ -1,9 +1,9 @@
 const BLOG = {
-  title: 'Later and too late',
+  title: 'pea pea's peas',
   author: 'pea pea',
   email: '809409747@qq.com',
   link: 'https://alive.bar/web/@manqoo',
-  description: '随便看看',
+  description: '',
   lang: 'zh-CN', // ['en-US', 'zh-CN', 'zh-HK', 'zh-TW', 'ja-JP', 'es-ES']
   timezone: 'Asia/Shanghai', // Your Notion posts' date will be interpreted as this timezone. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for all options.
   appearance: 'light', // ['light', 'dark', 'auto'],
