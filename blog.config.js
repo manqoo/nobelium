@@ -1,5 +1,5 @@
 const BLOG = {
-  title: 'pea pea's peas',
+  title: 'Later and too late',
   author: 'pea pea',
   email: '809409747@qq.com',
   link: 'https://alive.bar/web/@manqoo',
