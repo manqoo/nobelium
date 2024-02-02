@@ -53,6 +53,7 @@
 .notion {
   @apply text-gray-600 dark:text-gray-300;
   overflow-wrap: break-word;
+  selection:rgb(217, 249, 157)
 }
 .notion,
 .notion-text,
@@ -72,6 +73,7 @@ svg.notion-page-icon {
 
 svg + .notion-page-title-text {
   @apply border-b-0;
+  color:text-green-600
 }
 
 .notion-callout > .notion-page-icon-inline {
