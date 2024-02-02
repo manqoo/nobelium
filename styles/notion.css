@@ -63,7 +63,7 @@
   line-height: var(--no-leading);
 }
 .notion-page-link {
-  color: inherit;
+  color: text-green-600;
 }
 
 svg.notion-page-icon {
@@ -78,11 +78,11 @@ svg + .notion-page-title-text {
   max-width: unset;
   max-height: unset;
   height: var(--no-leading);
-  margin: 0;
+  margin: 0.1;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.05em;
+  font-size: 1.00em;
 }
 
 .notion-callout-text {
@@ -93,7 +93,7 @@ svg + .notion-page-title-text {
 
 .notion-bookmark {
   @apply border;
-  @apply border-gray-100;
+  @apply border-lime-200;
   color: inherit;
 }
 
@@ -111,7 +111,7 @@ pre[class*='language-'] {
 }
 
 .notion-bookmark:hover {
-  @apply border-blue-400;
+  @apply border-lime-400;
 }
 .notion-viewport {
   z-index: -10;
