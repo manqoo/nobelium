@@ -50,7 +50,8 @@
   --notion-red_background: rgb(82, 46, 42);
 }
 
-selection:rgb(217, 249, 157)
+:selection:rgb(217, 249, 157);
+}
 
 .notion {
   @apply text-gray-600 dark:text-gray-300;
