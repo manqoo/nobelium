@@ -10,7 +10,6 @@ const BLOG = {
   font: 'sans-serif', // ['sans-serif', 'serif']
   lightBackground: '#f7fee7', // use hex value, don't forget '#' e.g #fffefc
   darkBackground: '#F8FFF0', // use hex value, don't forget '#'
-  class="selection:bg-green-700 selection:text-lime-100”
   path: '', // leave this empty unless you want to deploy Nobelium in a folder
   since: 2023, // If leave this empty, current year will be used.
   postsPerPage: 5,
