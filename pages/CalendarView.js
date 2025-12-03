@@ -1,4 +1,4 @@
-import { getAllPosts } from '@/lib/notion-functions'
+import { getAllPosts } from '@/lib/server/notion-functions'
 import CalendarView from '@/components/CalendarView'
 import Container from '@/components/Container'
 import BlogPost from '@/components/BlogPost'
