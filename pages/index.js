@@ -1,3 +1,5 @@
+import CalendarView from './CalendarView'
+
 import { clientConfig } from '@/lib/server/config'
 
 import Container from '@/components/Container'
@@ -27,6 +29,7 @@ export default function Blog ({ postsToShow, page, showNext }) {
   return (
     <Container title={title} description={description}>
       {postsToShow.map(post => (
+        <CalendarView />
         <BlogPost key={post.id} post={post} />
       ))}
       {showNext && <Pagination page={page} showNext={showNext} />}
