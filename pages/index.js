@@ -2,7 +2,7 @@ import CalendarView from '@/components/CalendarView'
 import Container from '@/components/Container'
 import BlogPost from '@/components/BlogPost'
 import Pagination from '@/components/Pagination'
-import { getAllPosts, getDailyNotes } from '@/lib/server/notion-functions'
+import { getAllPosts, getDailyNotes } from '@/lib/server/notion-api'
 import { useConfig } from '@/lib/config'
 import { clientConfig } from '@/lib/server/config'
 
@@ -25,10 +25,8 @@ export default function Blog({ posts, postsToShow, showNext, dailyNotes }) {
 
   return (
     <Container title={title} description={description}>
-      {/* 日历组件 */}
       <CalendarView posts={posts} dailyNotes={dailyNotes} />
 
-      {/* 文章列表 */}
       {postsToShow.map(post => (
         <BlogPost key={post.id} post={post} />
       ))}
