@@ -2,7 +2,7 @@ import CalendarView from '@/components/CalendarView'
 import Container from '@/components/Container'
 import BlogPost from '@/components/BlogPost'
 import Pagination from '@/components/Pagination'
-import { getAllPosts, getDailyNotes } from '@/lib/server/notion-api' // <- 新增获取 dailyNotes
+import { getAllPosts, getDailyNotes } from '@/lib/server/notion' // <- 新增获取 dailyNotes
 import { useConfig } from '@/lib/config'
 import { clientConfig } from '@/lib/server/config'
 
