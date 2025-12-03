@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import dayjs from 'dayjs';
 import { getAllPosts } from '@/lib/notion'; // Nobelium 默认博客文章接口
-import { queryDatabase } from '@/lib/notion-api'; // 需要封装查询Notion数据库的函数
+import { queryDatabase } from '@/lib/notion'; // 需要封装查询Notion数据库的函数
 
 export default function CalendarView() {
   const [posts, setPosts] = useState([]);
