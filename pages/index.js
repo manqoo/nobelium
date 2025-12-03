@@ -1,38 +1,41 @@
 import CalendarView from '@/components/CalendarView'
-
-import { clientConfig } from '@/lib/server/config'
-
 import Container from '@/components/Container'
 import BlogPost from '@/components/BlogPost'
 import Pagination from '@/components/Pagination'
 import { getAllPosts } from '@/lib/notion'
 import { useConfig } from '@/lib/config'
+import { clientConfig } from '@/lib/server/config'
 
-export async function getStaticProps () {
+export async function getStaticProps() {
+  // 获取所有文章（不包含子页面）
   const posts = await getAllPosts({ includePages: false })
+
+  // 首页显示的文章数量
   const postsToShow = posts.slice(0, clientConfig.postsPerPage)
   const totalPosts = posts.length
   const showNext = totalPosts > clientConfig.postsPerPage
+
   return {
-    props: {
-      page: 1, // current page is 1
-      postsToShow,
-      showNext
-    },
-    revalidate: 1
+    props: { posts, postsToShow, showNext },
+    revalidate: 60 // 每 60 秒重新生成页面
   }
 }
 
-export default function Blog ({ postsToShow, page, showNext }) {
+export default function Blog({ posts, postsToShow, showNext }) {
   const { title, description } = useConfig()
 
   return (
     <Container title={title} description={description}>
-      <CalendarView />
+      {/* 日历组件，传入所有文章 */}
+      <CalendarView posts={posts} />
+
+      {/* 文章列表 */}
       {postsToShow.map(post => (
         <BlogPost key={post.id} post={post} />
       ))}
-      {showNext && <Pagination page={page} showNext={showNext} />}
+
+      {/* 分页 */}
+      {showNext && <Pagination page={1} showNext={showNext} />}
     </Container>
   )
 }
