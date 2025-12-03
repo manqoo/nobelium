@@ -1,10 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import dayjs from 'dayjs'
 
 export default function CalendarView({ posts, dailyNotes }) {
-  const [currentMonth, setCurrentMonth] = useState(dayjs())
-
-  // 按日期分组
+  // 按日期分组博客文章
   const postsByDate = useMemo(() => {
     const map = {}
     posts.forEach(post => {
@@ -15,40 +13,54 @@ export default function CalendarView({ posts, dailyNotes }) {
     return map
   }, [posts])
 
+  // 按日期分组 daily notes
   const notesByDate = useMemo(() => {
     const map = {}
     dailyNotes.forEach(note => {
       const date = dayjs(note.date).format('YYYY-MM-DD')
-      map[date] = note.content
+      if (!map[date]) map[date] = []
+      map[date].push(note)
     })
     return map
   }, [dailyNotes])
 
-  // 渲染简单日历
-  const startOfMonth = currentMonth.startOf('month')
-  const endOfMonth = currentMonth.endOf('month')
-  const days = []
-  for (let d = startOfMonth.date(); d <= endOfMonth.date(); d++) {
-    const dateStr = currentMonth.date(d).format('YYYY-MM-DD')
-    days.push(
-      <div key={dateStr} className="border p-2">
-        <div className="font-bold">{d}</div>
-        <div className="text-sm text-gray-600">{notesByDate[dateStr]}</div>
-        {postsByDate[dateStr]?.map(post => (
-          <div key={post.id}>
-            <a href={post.url} className="text-blue-600 underline">
-              {post.title}
-            </a>
-          </div>
-        ))}
-      </div>
-    )
-  }
+  // 获取日历本月日期
+  const today = dayjs()
+  const daysInMonth = today.daysInMonth()
+  const monthStart = today.startOf('month')
+
+  const calendarDays = Array.from({ length: daysInMonth }).map((_, idx) => {
+    const date = monthStart.add(idx, 'day').format('YYYY-MM-DD')
+    return {
+      date,
+      posts: postsByDate[date] || [],
+      notes: notesByDate[date] || []
+    }
+  })
 
   return (
-    <div>
-      <h2 className="text-lg font-semibold mb-2">{currentMonth.format('YYYY年MM月')}</h2>
-      <div className="grid grid-cols-7 gap-2">{days}</div>
+    <div className="grid grid-cols-7 gap-2 mb-8">
+      {calendarDays.map(day => (
+        <div key={day.date} className="border p-2 rounded">
+          <div className="font-bold mb-1">{day.date}</div>
+          {/* 显示 Daily Notes 内容 */}
+          {day.notes.map(note => (
+            <div key={note.id} className="text-sm text-gray-600 mb-1">
+              {note.content}
+            </div>
+          ))}
+          {/* 显示文章标题 */}
+          {day.posts.map(post => (
+            <a
+              key={post.id}
+              href={`/posts/${post.slug}`}
+              className="block text-blue-600 text-sm truncate"
+            >
+              {post.title}
+            </a>
+          ))}
+        </div>
+      ))}
     </div>
   )
 }
