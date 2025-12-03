@@ -75,4 +75,10 @@ export default function CalendarView() {
 
   return (
     <div className="grid grid-cols-7 gap-2 mb-6">
-      {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat]()
+      {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
+        <div key={d} className="font-bold text-center">{d}</div>
+      ))}
+      {daysInMonth}
+    </div>
+  );
+}
