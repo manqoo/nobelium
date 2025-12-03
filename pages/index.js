@@ -28,8 +28,8 @@ export default function Blog ({ postsToShow, page, showNext }) {
 
   return (
     <Container title={title} description={description}>
+      <CalendarView />
       {postsToShow.map(post => (
-        <CalendarView />
         <BlogPost key={post.id} post={post} />
       ))}
       {showNext && <Pagination page={page} showNext={showNext} />}
