@@ -1,4 +1,4 @@
-import CalendarView from './CalendarView'
+import CalendarView from '@/components/Calendar'
 
 import { clientConfig } from '@/lib/server/config'
 
