@@ -1,81 +1,61 @@
-import { useState } from 'react'
-import { getAllPosts } from '@/lib/notion'
-import BlogPost from './BlogPost'
+import { useState, useMemo } from 'react'
+import dayjs from 'dayjs'
 
 export default function CalendarView({ posts }) {
-  const [currentDate, setCurrentDate] = useState(new Date())
-  const [selectedPosts, setSelectedPosts] = useState([])
+  const [currentDate, setCurrentDate] = useState(dayjs())
+  const [selectedDay, setSelectedDay] = useState(null)
 
-  // 获取当前月份的第一天和最后一天
-  const year = currentDate.getFullYear()
-  const month = currentDate.getMonth()
-  const firstDay = new Date(year, month, 1)
-  const lastDay = new Date(year, month + 1, 0)
+  // 当月第一天和天数
+  const monthStart = currentDate.startOf('month')
+  const monthDays = currentDate.daysInMonth()
 
-  // 构造当月天数数组
-  const daysInMonth = Array.from(
-    { length: lastDay.getDate() },
-    (_, i) => new Date(year, month, i + 1)
-  )
-
-  // 点击某一天
-  const handleClickDay = (day) => {
-    const postsForDay = posts.filter(post => {
-      const postDate = new Date(post.date) // 确保 Notion 的日期字段是 ISO 字符串
-      return (
-        postDate.getFullYear() === day.getFullYear() &&
-        postDate.getMonth() === day.getMonth() &&
-        postDate.getDate() === day.getDate()
-      )
+  // 将文章按日期分组
+  const postsByDate = useMemo(() => {
+    const map = {}
+    posts.forEach(post => {
+      const date = dayjs(post.date).format('YYYY-MM-DD')
+      if (!map[date]) map[date] = []
+      map[date].push(post)
     })
-    setSelectedPosts(postsForDay)
-  }
+    return map
+  }, [posts])
 
-  // 切换月份
-  const prevMonth = () => setCurrentDate(new Date(year, month - 1, 1))
-  const nextMonth = () => setCurrentDate(new Date(year, month + 1, 1))
+  // 生成日历格子
+  const daysArray = Array.from({ length: monthDays }, (_, i) => i + 1)
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-        <button onClick={prevMonth}>上一月</button>
-        <h3>{year}年 {month + 1}月</h3>
-        <button onClick={nextMonth}>下一月</button>
-      </div>
+    <div className="mb-8">
+      <h2 className="text-xl font-bold mb-4">{currentDate.format('MMMM YYYY')}</h2>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '5px' }}>
-        {daysInMonth.map(day => {
-          const hasPost = posts.some(post => {
-            const postDate = new Date(post.date)
-            return (
-              postDate.getFullYear() === day.getFullYear() &&
-              postDate.getMonth() === day.getMonth() &&
-              postDate.getDate() === day.getDate()
-            )
-          })
+      <div className="grid grid-cols-7 gap-2 text-center">
+        {daysArray.map(day => {
+          const dateStr = currentDate.date(day).format('YYYY-MM-DD')
+          const hasPost = postsByDate[dateStr]?.length > 0
           return (
             <div
-              key={day.toISOString()}
-              onClick={() => handleClickDay(day)}
-              style={{
-                border: '1px solid #ccc',
-                padding: '10px',
-                cursor: 'pointer',
-                backgroundColor: hasPost ? '#e0f7fa' : '#fff'
-              }}
+              key={day}
+              className={`p-2 border rounded cursor-pointer ${hasPost ? 'bg-green-100' : 'bg-gray-100'}`}
+              onClick={() => setSelectedDay(dateStr)}
             >
-              {day.getDate()}
+              {day}
             </div>
           )
         })}
       </div>
 
-      {selectedPosts.length > 0 && (
-        <div style={{ marginTop: '20px' }}>
-          <h4>文章列表</h4>
-          {selectedPosts.map(post => (
-            <BlogPost key={post.id} post={post} />
-          ))}
+      {/* 显示选中日期文章 */}
+      {selectedDay && (
+        <div className="mt-4">
+          <h3 className="font-semibold mb-2">
+            Posts on {dayjs(selectedDay).format('YYYY-MM-DD')}
+          </h3>
+          <ul className="list-disc pl-5">
+            {postsByDate[selectedDay]?.map(post => (
+              <li key={post.id}>
+                <a href={post.slug}>{post.title}</a>
+              </li>
+            )) || <li>No posts</li>}
+          </ul>
         </div>
       )}
     </div>
